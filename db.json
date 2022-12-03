@@ -1,0 +1,48 @@
+{
+    "Lists":[
+        {
+            "context":"None",
+            "device":"LNT98506785",
+            "event":800000,
+            "firstoccurrencetime":"Thu, 27 May 2020",
+            "lastoccurrencetime":"Thu, 22 Jun 2020",
+            "occurrencecount":38,
+            "persisttime":"Thu, 28 Jul 2020",
+            "receivetime":"Fri, 25 Aug 2020",
+            "state":"open"
+        },
+        {
+            "context":"None",
+            "device":"LNT98506798",
+            "event":400000,
+            "firstoccurrencetime":"Thu, 27 May 2020",
+            "lastoccurrencetime":"Thu, 22 Jun 2020",
+            "occurrencecount":38,
+            "persisttime":"Thu, 28 Jul 2020",
+            "receivetime":"Fri, 25 Aug 2020",
+            "state":"open"
+        },
+        {
+            "context":"None",
+            "device":"LNT98506254",
+            "event":500000,
+            "firstoccurrencetime":"Thu, 27 May 2020",
+            "lastoccurrencetime":"Thu, 22 Jun 2020",
+            "occurrencecount":36,
+            "persisttime":"Thu, 28 Jul 2020",
+            "receivetime":"Fri, 25 Aug 2020",
+            "state":"open"
+        },
+        {
+            "context":"None",
+            "device":"LNT98506988",
+            "event":700000,
+            "firstoccurrencetime":"Thu, 27 May 2020",
+            "lastoccurrencetime":"Thu, 22 Jun 2020",
+            "occurrencecount":40,
+            "persisttime":"Thu, 28 Jul 2020",
+            "receivetime":"Fri, 25 Aug 2020",
+            "state":"open"
+        }
+    ]
+}

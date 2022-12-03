@@ -1,0 +1,197 @@
+<section class="content" data-select2-id="33">
+    <div class="container-fluid" data-select2-id="32">
+ 
+    <div class="row">
+
+    <div class="col-md-4">
+        <div class="card card-info eventcard">
+            <div class="card-header">
+                <h3 class="card-title">Select Details</h3>
+                <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+            </button>
+            </div>
+            </div>
+        <div class="card-body">
+            <form [formGroup] = "detaildata">
+                
+                <!-- <div class="form-group" data-select2-id="1">
+                    <label for="inputDevice">Select Device</label>
+                    <select class="form-control" formControlName="device" [(ngModel)]="DeviceSelected" (ngModelChange)="onDeviceSelected($event)"  id="inputDevice" style="width: 100%;" data-select2-id="1" tabindex="-1" aria-hidden="true">
+                        <option value="">All Devices
+                         </option>  
+                        <option *ngFor="let device of deviceList" [value]="device">{{ device }}</option>
+                    </select>
+                    
+                    <span class="select2 select2-container select2-container--default select2-container--below select2-container--focus" dir="ltr" data-select2-id="2" style="width: 100%;"><span class="selection"><span class="select2-selection select2-selection--single" role="combobox" aria-haspopup="true" aria-expanded="false" tabindex="0" aria-labelledby="select2-lbth-container"><span class="select2-selection__rendered" id="select2-lbth-container" role="textbox" aria-readonly="true" title="Alabama">Alabama</span><span class="select2-selection__arrow" role="presentation"><b role="presentation"></b></span></span></span><span class="dropdown-wrapper" aria-hidden="true"></span></span> 
+                  
+                  </div> -->
+
+                <mat-form-field style="width:100%">
+                    <mat-label for="inputDevice">Select Devices</mat-label>
+                <input formControlName="device" matInput type="text" [matAutocomplete]="auto" />
+                <mat-autocomplete #auto="matAutocomplete" [(ngModel)]="DeviceSelected" (ngModelChange)="onDeviceSelected($event)"  id="inputDevice" style="width: 100%;">
+                    <mat-option>All Devices</mat-option>
+                <mat-option *ngFor="let device of filteredOptions" [value]="device">
+                {{device}}
+                </mat-option>
+                </mat-autocomplete>
+                </mat-form-field>
+
+                  <!-- <div class="form-group" data-select2-id="52">
+                    <label>Minimal (.select2-danger)</label>
+                    <select class="form-control select2 select2-hidden-accessible" data-dropdown-css-class="select2-danger" style="width: 100%;" data-select2-id="12" tabindex="-1" aria-hidden="true">
+                    <option selected="selected" data-select2-id="14">Alabama</option>
+                    <option data-select2-id="55">Alaska</option>
+                    <option data-select2-id="56">California</option>
+                    <option data-select2-id="57">Delaware</option>
+                    <option data-select2-id="58">Tennessee</option>
+                    <option data-select2-id="59">Texas</option>
+                    <option data-select2-id="60">Washington</option>
+                    </select>
+                   
+                    </div> -->
+
+
+
+
+                  <div class="form-group" data-select2-id="2">
+                    <label for="inputEvent">Select Event Type</label>
+                    <select class="form-control" formControlName="event" [(ngModel)]="EventSelected" (ngModelChange)="onEventSelected($event)" id="inputEvent" style="width: 100%;" data-select2-id="2" tabindex="-1" aria-hidden="true">
+                    <option value="">All Events</option>    
+                    <option *ngFor="let event of eventList" [value]="event">{{ event }}</option>
+                    </select>
+                </div>
+                <div class="form-group" data-select2-id="3">
+                    <label for="inputState">Select Event State</label>
+                    <select class="form-control" formControlName="state" [(ngModel)]="StateSelected" (ngModelChange)="onSateSelected($event)" id="inputState" style="width: 100%;" data-select2-id="3" tabindex="-1" aria-hidden="true">
+                    <option value="">All State</option> 
+                    <option *ngFor="let state of stateList" [value]="state">{{ state }}</option>
+                    </select>
+                </div>
+               
+                    <!-- <div class="form-group">
+                        <label>Select Date</label>
+                        <div class="input-group">
+                        <input type="date" name="" id="">
+                        </div>
+                    </div> -->
+                    <!-- <button class="btn btn-block btn-info">Submit</button> -->
+                    <!-- <button (click)="showdashboard()" type="" class="btn btn-block btn-info">Submit</button> -->
+            </form>                      
+        </div>
+   
+           </div>
+        </div>
+    
+    <div class="col-md-4">
+
+    <div class="card card-primary eventcard">
+    <div class="card-header">
+        <h3 class="card-title">Pie Chart</h3>
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+        <i class="fas fa-times"></i>
+    </button>
+    </div>
+    </div>
+    <div class="chartContainer">
+        <apx-chart [series]="chartSeries" [chart]="chartDetails" [labels]="chartLabels" [title]="chartTitle" [dataLabels]="chartDataLabels"></apx-chart>   
+    </div>        
+    </div>
+</div>   
+<div class="col-md-4">
+
+    <div class="card card-success eventcard">
+    <div class="card-header">
+        <h3 class="card-title">Event Type Count</h3>
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+        <i class="fas fa-times"></i>
+    </button>
+    </div>
+    </div>
+    <div class="card-body">
+      <p class="totaldevice">{{ eventTypeCount }}</p>
+      <p></p>
+    </div>
+        
+    </div>
+</div>
+
+</div>
+
+<div class="card card-dtabular">
+    
+    <div class="card-header card-info">
+        <h3 class="card-title">Event Details</h3>
+        <div class="card-tools">
+        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+        <i class="fas fa-minus"></i>
+        </button>
+        <button type="button" class="btn btn-tool" data-card-widget="remove">
+        <i class="fas fa-times"></i>
+    </button>
+    </div>
+    </div>
+    
+    <div class="card-body">
+    <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
+        <div class="row"><div class="col-sm-12 col-md-6">
+     
+    </div>
+    <!-- <div class="col-sm-12 col-md-6">
+        <div id="example1_filter" class="dataTables_filter">
+            <label>Search:<input type="search" class="form-control form-control-sm" placeholder="" aria-controls="example2"></label>
+        </div>
+    </div> -->
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <table id="example2" class="table table-bordered table-striped dataTable dtr-inline table-responsive">
+        
+    <thead>
+    <tr>
+        <th *ngFor="let col of column" class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">{{ col }}</th></tr>
+    </thead>
+    <tbody>  
+        <tr *ngFor="let list of table | paginate: {
+            itemsPerPage: tableSize,
+            currentPage: page,
+            totalItems: count}; let i=index" >
+            <td *ngFor="let col of index">
+                {{ list[col] }}
+            </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+</div>
+<div class="row">
+    <div class="col-sm-12 col-md-5">
+        </div><div class="col-sm-12 col-md-7">
+            <div class="dataTables_paginate paging_simple_numbers" id="example1_paginate">
+                <pagination-controls
+                previousLabel="Prev"
+                nextLabel="Next"
+                (pageChange)="onTableDataChange($event)">
+            </pagination-controls>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+    
+    </div>
+</div>
+    </section>

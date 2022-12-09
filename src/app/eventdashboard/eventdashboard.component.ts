@@ -40,7 +40,9 @@ export class EventdashboardComponent implements OnInit {
   filteredOptions: any;
   options: any;
   optionsEvent: any;
+  optionsState: any;
 filteredOptionsEvent: any;
+filteredOptionsState : any;
 constructor( private  eventserviceService:  EventserviceService,private fb : FormBuilder){}
 table:Lists[]=[];
 
@@ -93,6 +95,7 @@ stateList:any;
 DeviceSelected:string='';
 EventSelected:string='';
 StateSelected:string='';
+
 column = ["Context","Device","Event","FirstOccurrTime","LastOccurrTime","OccurrCount","PersistTime","ReceiveTime","State"];
 index = ["context","device","event","firstoccurrencetime","lastoccurrencetime","occurrencecount","persisttime","receivetime","state"];
 ngOnInit():void 
@@ -129,7 +132,8 @@ ngOnInit():void
     .subscribe(
       data3=>{
         this.stateList = data3.state;
-
+        this.optionsState = data3.state;
+        this.filteredOptionsState = data3.state;
       }
     );
 
@@ -140,8 +144,7 @@ ngOnInit():void
     })
     this.detaildata.valueChanges.subscribe(response => {
       console.log(response);
-      this.filterData(response);
-      this.filterDataEvent(response);
+      this.filterData(response) + "" + this.filterDataEvent(response) + "" +this.filterDataState(response);
     })
 
     this.eventserviceService.getAllList()
@@ -169,6 +172,13 @@ filterDataEvent(enteredData: any)
   console.log('enteredData');
 this.filteredOptionsEvent=this.optionsEvent.filter((event: number) => {
 return event.toFixed().indexOf(enteredData.event) > -1;
+})
+}
+
+filterDataState(enteredData: any)
+{
+this.filteredOptionsState=this.optionsState.filter((state: any) => {
+return state.toLowerCase().indexOf(enteredData.state) > -1;
 })
 }
 

@@ -32,6 +32,13 @@ import { forkJoin } from 'rxjs';
 export class EventdashboardComponent implements OnInit {
   detaildata!: FormGroup; 
 
+
+//   detaildata = new FormGroup({
+//     device: new FormControl(),
+//     event: new FormControl(),
+//     state: new FormControl()
+//  });
+
   page:number = 1;
   count:number=0;
   tableSize:number = 5;
@@ -44,31 +51,12 @@ export class EventdashboardComponent implements OnInit {
 filteredOptionsEvent: any;
 filteredOptionsState : any;
 constructor( private  eventserviceService:  EventserviceService,private fb : FormBuilder){}
-table:Lists[]=[];
-
-// initForm()
-// {
-//   this.detaildata = this.fb.group({
-//     device:new FormControl('',Validators.required)
-//   })
-//   this.detaildata.valueChanges.subscribe(response => {
-//     console.log('data is' + response)
-//     this.filterData(response);
-//   })
-// }
-
-// filterData(enteredData)
-// {
-// }
+table:Lists[]=[]
 
 onTableDataChange(event:any)
 {
-this.page=event;
-this.getAllList();
+this.page=event
 }
-  getAllList() {
-    throw new Error('Method not implemented.');
-  }
 
 chartSeries:ApexNonAxisChartSeries=[];
 chartDetails:ApexChart={
@@ -116,7 +104,7 @@ ngOnInit():void
         this.options = data.device;
         this.filteredOptions = data.device;
         
-        // setTimeout(():void => { window.location.reload(); });
+
       }
     );
 
@@ -142,9 +130,18 @@ ngOnInit():void
       event: [''],
       state: [''],
     })
+
+
+    // this.detaildata = new FormGroup({
+    //   device: new FormControl(),
+    //   event: new FormControl(),
+    //   state: new FormControl()
+    // })
+
     this.detaildata.valueChanges.subscribe(response => {
-      console.log(response);
-      this.filterData(response) + "" + this.filterDataEvent(response) + "" +this.filterDataState(response);
+      this.filterData(response);
+      this.filterDataEvent(response);
+      this.filterDataState(response);
     })
 
     this.eventserviceService.getAllList()
@@ -155,8 +152,100 @@ ngOnInit():void
         this.eventTypeCount = data.eventTypeCount;
         this.chartSeries = Object.values(data.pieListData);
         this.chartLabels = Object.keys(data.pieListData);
+     
+        if (data.device == "" && data.event != "" && data.state != "")
+               {
+                 // alert("device is null");
+                 this.eventserviceService.getUserWithoutDevice(data.event,data.state)
+                 .subscribe(
+                   data=>{    
+                    //  this.lists = data.device;
+                     this.table = data.list;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+               if (data.event == "" && data.state != "" && data.device != "")
+               {
+                 // alert("event is null");
+                 this.eventserviceService.getUserWithoutEvent(data.device,data.state)
+                 .subscribe(
+                   data=>{    
+                     // this.lists = data.device;
+                     this.table = data.list;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+               if (data.state == ""&& data.event != "" && data.device != "")
+               {
+                 // alert("state is null");
+                 this.eventserviceService.getUserWithoutState(data.device,data.event)
+                 .subscribe(
+                   data=>{    
+                     this.table = data.list;
+                     // this.lists = data.device;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+               if (data.state == "" && data.event == "")
+               {
+                 // alert("event & state is null");
+                 this.eventserviceService.getUserWithoutStateAndEvent(data.device)
+                 .subscribe(
+                   data=>{    
+                     this.table = data.list;
+                     // this.lists = data.device;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+               if (data.device == "" && data.event == "" && data.state == ""){
+                 // alert("all are available");
+                 this.eventserviceService.getUsersMultipleParams(data.device,data.event,data.state)
+                 // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+                 .subscribe(
+                       data=>{   
+                         this.table = data.list; 
+                         // this.lists = data.device;
+                         this.eventTypeCount = data.eventTypeCount;
+                         this.chartSeries = Object.values(data.pieListData);
+                         this.chartLabels = Object.keys(data.pieListData);
+                       }
+                     );
+               }
+                        
+
+              //                 if (data.device = "All Devices" && data.event == "All Events" && data.state == "All State"){
+              //    // alert("all are available");
+              //    this.eventserviceService.getUsersNotMultipleParams(data.device,data.event,data.state)
+              //    // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+              //    .subscribe(
+              //          data=>{   
+              //            this.table = data.list; 
+              //            // this.lists = data.device;
+              //            this.eventTypeCount = data.eventTypeCount;
+              //            this.chartSeries = Object.values(data.pieListData);
+              //            this.chartLabels = Object.keys(data.pieListData);
+              //          }
+              //        );
+              //  }
+
+
+
+
       }
     );
+    
 }
 
 filterData(enteredData: any)
@@ -169,7 +258,7 @@ return device.toLowerCase().indexOf(enteredData.device) > -1;
 
 filterDataEvent(enteredData: any)
 {
-  console.log('enteredData');
+  // console.log('enteredData');
 this.filteredOptionsEvent=this.optionsEvent.filter((event: number) => {
 return event.toFixed().indexOf(enteredData.event) > -1;
 })
@@ -201,9 +290,6 @@ return state.toLowerCase().indexOf(enteredData.state) > -1;
 // }
 // onClickSubmit(data: { device: string; event: string; state: string; }):void {
 //   // alert("Entered Device id : " + data.device);
- 
-
- 
 
 //       if (data.device == "" && data.event != "" && data.state != "")
 //       {
@@ -283,7 +369,7 @@ onDeviceSelected(selectedDeviceName:any):void{
   this.eventserviceService.getDeviceForSelectedDeviceByParam(selectedDeviceName)
   .subscribe(
     data=>{       
-      this.lists = data.list;
+      this.table = data.list;
       this.eventTypeCount = data.eventTypeCount;
       this.chartSeries = Object.values(data.pieListData);
       this.chartLabels = Object.keys(data.pieListData);
@@ -294,7 +380,7 @@ onEventSelected(selectedEventNumber:any):void{
   this.eventserviceService.getDeviceForSelectedEventByParam(selectedEventNumber)
   .subscribe(
     data=>{       
-      this.lists = data.list;
+      this.table = data.list;
       this.eventTypeCount = data.eventTypeCount;
       this.chartSeries = Object.values(data.pieListData);
       this.chartLabels = Object.keys(data.pieListData);
@@ -305,7 +391,7 @@ onSateSelected(selectedStateName:any):void{
   this.eventserviceService.getDeviceForSelectedStateByParam(selectedStateName)
   .subscribe(
     data=>{       
-      this.lists = data.list;
+      this.table = data.list;
       this.eventTypeCount = data.eventTypeCount;
       this.chartSeries = Object.values(data.pieListData);
       this.chartLabels = Object.keys(data.pieListData);

@@ -50,6 +50,16 @@ public getUsersMultipleParams(device: any,event: any,state: any): Observable<any
   let queryParams = new HttpParams({ fromObject: parameters }); 
   return this.httpclient.get<any>(url,{params:queryParams});
 }
+
+
+// public getUsersNotMultipleParams(device: any,event: any,state: any): Observable<any> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"device":device,"event":event,"state":state};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<any>(url,{params:queryParams});
+// }
+
+
 public getUserWithoutDevice(event: any,state: any): Observable<any> {
   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
   let parameters = {"event":event,"state":state};

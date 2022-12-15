@@ -10,7 +10,7 @@ export class Lists {
     receivetime:string;
     state:string;
 
-    constructor(context,device,event,firstoccurrencetime,lastoccurrencetime,occurrencecount,persisttime,receivetime,state)
+    constructor(context: string,device: string,event: number,firstoccurrencetime: string,lastoccurrencetime: string,occurrencecount: number,persisttime: string,receivetime: string,state: string)
     {
         this.context=context;
         this.device=device;

@@ -18,6 +18,7 @@
             </div>
         <div class="card-body">
             <form [formGroup] = "detaildata">
+            
                 <!-- #showdashboardbyparams = "ngForm" (ngSubmit)="onClickSubmit(showdashboardbyparams.value)" -->
 
                 <!-- <div class="form-group" data-select2-id="1">
@@ -34,9 +35,9 @@
 
                 <mat-form-field style="width:100%">
                     <mat-label for="inputDevice">Select Devices</mat-label>
-                <input formControlName="device" matInput type="text" [matAutocomplete]="auto" />
-                <mat-autocomplete #auto="matAutocomplete" [(ngModel)]="DeviceSelected" (ngModelChange)="onDeviceSelected($event)"  id="inputDevice" style="width: 100%;">
-                    <mat-option>All Devices</mat-option>
+                <input formControlName="device" matInput (ngModelChange)="onDeviceSelected($event)" type="text" [matAutocomplete]="auto" />
+                <mat-autocomplete #auto="matAutocomplete"   id="inputDevice" style="width: 100%;">
+                    <mat-option value="">All Devices</mat-option>
                 <mat-option *ngFor="let device of filteredOptions" [value]="device">
                 {{device}}
                 </mat-option>
@@ -71,9 +72,9 @@
 
                 <mat-form-field style="width:100%">
                     <mat-label for="inputEvent">Select Event Type</mat-label>
-                <input formControlName="event" matInput type="text" [matAutocomplete]="abc" />
-                <mat-autocomplete #abc="matAutocomplete" [(ngModel)]="EventSelected" (ngModelChange)="onEventSelected($event)"  id="inputEvent" style="width: 100%;">
-                    <mat-option>All Events</mat-option>
+                <input formControlName="event" matInput (ngModelChange)="onEventSelected($event)" type="text" [matAutocomplete]="abc" />
+                <mat-autocomplete #abc="matAutocomplete"  id="inputEvent" style="width: 100%;">
+                    <mat-option value="">All Events</mat-option>
                 <mat-option *ngFor="let event of filteredOptionsEvent" [value]="event">
                 {{event}}
                 </mat-option>
@@ -91,9 +92,9 @@
                
                 <mat-form-field style="width:100%">
                     <mat-label for="inputState">Select Event State</mat-label>
-                <input formControlName="state" matInput type="text" [matAutocomplete]="state" />
-                <mat-autocomplete #state="matAutocomplete" [(ngModel)]="StateSelected" (ngModelChange)="onSateSelected($event)"  id="inputState" style="width: 100%;">
-                    <mat-option>All State</mat-option>
+                <input formControlName="state" class="" (ngModelChange)="onSateSelected($event)" matInput type="text" [matAutocomplete]="state" />
+                <mat-autocomplete #state="matAutocomplete"  id="inputState" style="width: 100%;">
+                    <mat-option value="">All State</mat-option>
                 <mat-option *ngFor="let state of filteredOptionsState" [value]="state">
                 {{state}}
                 </mat-option>
@@ -118,7 +119,8 @@
                     </div> -->
                     <!-- <button class="btn btn-block btn-info">Submit</button> -->
                     <!-- <button (click)="showdashboard()" type="" class="btn btn-block btn-info">Submit</button> -->
-            </form>                      
+            
+                </form>                      
         </div>
    
            </div>

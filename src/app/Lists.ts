@@ -1,4 +1,7 @@
 export class Lists {
+  pieListData(_pieListData: any): import("ng-apexcharts").ApexNonAxisChartSeries {
+    throw new Error('Method not implemented.');
+  }
 
     context:string;
     device:string;
@@ -9,6 +12,9 @@ export class Lists {
     persisttime:string;
     receivetime:string;
     state:string;
+  
+  eventTypeCount: any;
+  list: Lists[] = [];
 
     constructor(context: string,device: string,event: number,firstoccurrencetime: string,lastoccurrencetime: string,occurrencecount: number,persisttime: string,receivetime: string,state: string)
     {

@@ -50,8 +50,11 @@ export class EventdashboardComponent implements OnInit {
   optionsState: any;
 filteredOptionsEvent: any;
 filteredOptionsState : any;
+device: any;
+event: number | undefined;
+state: any;
 constructor( private  eventserviceService:  EventserviceService,private fb : FormBuilder){}
-table:Lists[]=[]
+table:Lists[]=[];
 
 onTableDataChange(event:any)
 {
@@ -84,17 +87,22 @@ DeviceSelected:string='';
 EventSelected:string='';
 StateSelected:string='';
 
+private selectedDevice = 'allDevices'
+private selectedEvent = 'allEvents'
+private selectedState = 'allStates'
+
+
 column = ["Context","Device","Event","FirstOccurrTime","LastOccurrTime","OccurrCount","PersistTime","ReceiveTime","State"];
 index = ["context","device","event","firstoccurrencetime","lastoccurrencetime","occurrencecount","persisttime","receivetime","state"];
 ngOnInit():void 
   {
     // this.initForm();
-    // if (!localStorage.getItem('foo')) { 
-    //   localStorage.setItem('foo', 'no reload') 
-    //   location.reload() 
-    // } else {
-    //   localStorage.removeItem('foo') 
-    // }
+    if (!localStorage.getItem('foo')) { 
+      localStorage.setItem('foo', 'no reload') 
+      location.reload() 
+    } else {
+      localStorage.removeItem('foo') 
+    }
   
 
     this.eventserviceService.getlist()
@@ -139,20 +147,28 @@ ngOnInit():void
     // })
 
     this.detaildata.valueChanges.subscribe(response => {
-      this.filterData(response);
-      this.filterDataEvent(response);
-      this.filterDataState(response);
+      return this.filterData(response) + "" + this.filterDataEvent(response) + "" + this.filterDataState(response);
     })
 
     this.eventserviceService.getAllList()
     .subscribe(
       data=>{
+        if((data.device == "" && data.device == "allDevices") && (data.event == "" && data.event == "allEvents")            
+         && (data.state == "" && data.state == "allStates") )
+        {
         this.table = data.list;
         // console.log("data.list",data.list);
         this.eventTypeCount = data.eventTypeCount;
         this.chartSeries = Object.values(data.pieListData);
         this.chartLabels = Object.keys(data.pieListData);
-     
+      }
+      
+      this.table = data.list;
+      // console.log("data.list",data.list);
+      this.eventTypeCount = data.eventTypeCount;
+      this.chartSeries = Object.values(data.pieListData);
+      this.chartLabels = Object.keys(data.pieListData);
+
         if (data.device == "" && data.event != "" && data.state != "")
                {
                  // alert("device is null");
@@ -195,7 +211,7 @@ ngOnInit():void
                    }
                  );
                };
-               if (data.state == "" && data.event == "")
+               if (data.state == "" && data.event == "" && data.device!="")
                {
                  // alert("event & state is null");
                  this.eventserviceService.getUserWithoutStateAndEvent(data.device)
@@ -209,8 +225,41 @@ ngOnInit():void
                    }
                  );
                };
-               if (data.device == "" && data.event == "" && data.state == ""){
+
+               if (data.state == "" && data.device=="" && data.event!= "")
+               {
+                 // alert("event & state is null");
+                 this.eventserviceService.getUserWithoutStateAndDevice(data.event)
+                 .subscribe(
+                   data=>{    
+                     this.table = data.list;
+                     // this.lists = data.device;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+
+               if (data.event == "" && data.device=="" && data.state!= "")
+               {
+                 // alert("event & state is null");
+                 this.eventserviceService.getUserWithoutEventAndDevice(data.state)
+                 .subscribe(
+                   data=>{    
+                     this.table = data.list;
+                     // this.lists = data.device;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+
+               if ((data.device== "" && data.event== "" && data.state== "") && 
+               (data.device!== "" && data.event! == "" && data.state! == "")){
                  // alert("all are available");
+                 
                  this.eventserviceService.getUsersMultipleParams(data.device,data.event,data.state)
                  // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
                  .subscribe(
@@ -225,14 +274,14 @@ ngOnInit():void
                }
                         
 
-              //                 if (data.device = "All Devices" && data.event == "All Events" && data.state == "All State"){
+              //   if (data.device!== "" && data.event! == "" && data.state! == ""){
               //    // alert("all are available");
-              //    this.eventserviceService.getUsersNotMultipleParams(data.device,data.event,data.state)
+              //    this.eventserviceService.getUsersMultipleParams(data.device,data.event,data.state)
               //    // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
               //    .subscribe(
               //          data=>{   
               //            this.table = data.list; 
-              //            // this.lists = data.device;
+              //            this.lists = data.device;
               //            this.eventTypeCount = data.eventTypeCount;
               //            this.chartSeries = Object.values(data.pieListData);
               //            this.chartLabels = Object.keys(data.pieListData);
@@ -245,8 +294,8 @@ ngOnInit():void
 
       }
     );
-    
-}
+    } 
+
 
 filterData(enteredData: any)
 {
@@ -365,7 +414,7 @@ return state.toLowerCase().indexOf(enteredData.state) > -1;
 
 onDeviceSelected(selectedDeviceName:any):void{
   //console.log(event);
-  //this.DeviceSelected = event.target.value;
+  this.DeviceSelected = selectedDeviceName;
   this.eventserviceService.getDeviceForSelectedDeviceByParam(selectedDeviceName)
   .subscribe(
     data=>{       
@@ -377,7 +426,8 @@ onDeviceSelected(selectedDeviceName:any):void{
   );
 }
 onEventSelected(selectedEventNumber:any):void{
-  this.eventserviceService.getDeviceForSelectedEventByParam(selectedEventNumber)
+  this.EventSelected = selectedEventNumber;
+  this.eventserviceService.getDeviceForSelectedEventByParam(selectedEventNumber,this.DeviceSelected)
   .subscribe(
     data=>{       
       this.table = data.list;
@@ -388,7 +438,8 @@ onEventSelected(selectedEventNumber:any):void{
   );
 }
 onSateSelected(selectedStateName:any):void{
-  this.eventserviceService.getDeviceForSelectedStateByParam(selectedStateName)
+  this.StateSelected = selectedStateName;
+  this.eventserviceService.getDeviceForSelectedStateByParam(selectedStateName,this.DeviceSelected)
   .subscribe(
     data=>{       
       this.table = data.list;

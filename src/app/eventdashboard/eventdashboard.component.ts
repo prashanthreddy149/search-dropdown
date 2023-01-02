@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
 import { Lists } from '../Lists';
 // import { RestService } from '../rest.service';
 import { EventserviceService } from '../eventservice.service';
 import { FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
+
+
 
 import {
   ChartComponent,
@@ -53,6 +55,11 @@ filteredOptionsState : any;
 device: any;
 event: number | undefined;
 state: any;
+
+isDescOrder:boolean=true;
+orderHeader:string='';
+
+
 constructor( private  eventserviceService:  EventserviceService,private fb : FormBuilder){}
 table:Lists[]=[];
 
@@ -153,15 +160,15 @@ ngOnInit():void
     this.eventserviceService.getAllList()
     .subscribe(
       data=>{
-        if((data.device == "" && data.device == "allDevices") && (data.event == "" && data.event == "allEvents")            
-         && (data.state == "" && data.state == "allStates") )
-        {
-        this.table = data.list;
-        // console.log("data.list",data.list);
-        this.eventTypeCount = data.eventTypeCount;
-        this.chartSeries = Object.values(data.pieListData);
-        this.chartLabels = Object.keys(data.pieListData);
-      }
+      //   if((data.device == "" && data.device == "allDevices") && (data.event == "" && data.event == "allEvents")            
+      //    && (data.state == "" && data.state == "allStates") )
+      //   {
+      //   this.table = data.list;
+      //   // console.log("data.list",data.list);
+      //   this.eventTypeCount = data.eventTypeCount;
+      //   this.chartSeries = Object.values(data.pieListData);
+      //   this.chartLabels = Object.keys(data.pieListData);
+      // }
       
       this.table = data.list;
       // console.log("data.list",data.list);
@@ -169,109 +176,108 @@ ngOnInit():void
       this.chartSeries = Object.values(data.pieListData);
       this.chartLabels = Object.keys(data.pieListData);
 
-        if (data.device == "" && data.event != "" && data.state != "")
-               {
-                 // alert("device is null");
-                 this.eventserviceService.getUserWithoutDevice(data.event,data.state)
-                 .subscribe(
-                   data=>{    
-                    //  this.lists = data.device;
-                     this.table = data.list;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
-               if (data.event == "" && data.state != "" && data.device != "")
-               {
-                 // alert("event is null");
-                 this.eventserviceService.getUserWithoutEvent(data.device,data.state)
-                 .subscribe(
-                   data=>{    
-                     // this.lists = data.device;
-                     this.table = data.list;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
-               if (data.state == ""&& data.event != "" && data.device != "")
-               {
-                 // alert("state is null");
-                 this.eventserviceService.getUserWithoutState(data.device,data.event)
-                 .subscribe(
-                   data=>{    
-                     this.table = data.list;
-                     // this.lists = data.device;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
-               if (data.state == "" && data.event == "" && data.device!="")
-               {
-                 // alert("event & state is null");
-                 this.eventserviceService.getUserWithoutStateAndEvent(data.device)
-                 .subscribe(
-                   data=>{    
-                     this.table = data.list;
-                     // this.lists = data.device;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
+        // if (data.device == "" && data.event != "" && data.state != "")
+        //        {
+        //          // alert("device is null");
+        //          this.eventserviceService.getUserWithoutDevice(data.event,data.state)
+        //          .subscribe(
+        //            data=>{    
+        //             //  this.lists = data.device;
+        //              this.table = data.list;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
+        //        if (data.event == "" && data.state != "" && data.device != "")
+        //        {
+        //          // alert("event is null");
+        //          this.eventserviceService.getUserWithoutEvent(data.device,data.state)
+        //          .subscribe(
+        //            data=>{    
+        //              // this.lists = data.device;
+        //              this.table = data.list;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
+        //        if (data.state == ""&& data.event != "" && data.device != "")
+        //        {
+        //          // alert("state is null");
+        //          this.eventserviceService.getUserWithoutState(data.device,data.event)
+        //          .subscribe(
+        //            data=>{    
+        //              this.table = data.list;
+        //              // this.lists = data.device;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
+        //        if (data.state == "" && data.event == "" && data.device!="")
+        //        {
+        //          // alert("event & state is null");
+        //          this.eventserviceService.getUserWithoutStateAndEvent(data.device)
+        //          .subscribe(
+        //            data=>{    
+        //              this.table = data.list;
+        //              // this.lists = data.device;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
 
-               if (data.state == "" && data.device=="" && data.event!= "")
-               {
-                 // alert("event & state is null");
-                 this.eventserviceService.getUserWithoutStateAndDevice(data.event)
-                 .subscribe(
-                   data=>{    
-                     this.table = data.list;
-                     // this.lists = data.device;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
+        //        if (data.state == "" && data.device=="" && data.event!= "")
+        //        {
+        //          // alert("event & state is null");
+        //          this.eventserviceService.getUserWithoutStateAndDevice(data.event)
+        //          .subscribe(
+        //            data=>{    
+        //              this.table = data.list;
+        //              // this.lists = data.device;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
 
-               if (data.event == "" && data.device=="" && data.state!= "")
-               {
-                 // alert("event & state is null");
-                 this.eventserviceService.getUserWithoutEventAndDevice(data.state)
-                 .subscribe(
-                   data=>{    
-                     this.table = data.list;
-                     // this.lists = data.device;
-                     this.eventTypeCount = data.eventTypeCount;
-                     this.chartSeries = Object.values(data.pieListData);
-                     this.chartLabels = Object.keys(data.pieListData);
-                   }
-                 );
-               };
+        //        if (data.event == "" && data.device=="" && data.state!= "")
+        //        {
+        //          // alert("event & state is null");
+        //          this.eventserviceService.getUserWithoutEventAndDevice(data.state)
+        //          .subscribe(
+        //            data=>{    
+        //              this.table = data.list;
+        //              // this.lists = data.device;
+        //              this.eventTypeCount = data.eventTypeCount;
+        //              this.chartSeries = Object.values(data.pieListData);
+        //              this.chartLabels = Object.keys(data.pieListData);
+        //            }
+        //          );
+        //        };
 
-               if ((data.device== "" && data.event== "" && data.state== "") && 
-               (data.device!== "" && data.event! == "" && data.state! == "")){
-                 // alert("all are available");
+        //        if (data.device!= "" && data.event!= "" && data.state!= ""){
+        //          // alert("all are available");
                  
-                 this.eventserviceService.getUsersMultipleParams(data.device,data.event,data.state)
-                 // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
-                 .subscribe(
-                       data=>{   
-                         this.table = data.list; 
-                         // this.lists = data.device;
-                         this.eventTypeCount = data.eventTypeCount;
-                         this.chartSeries = Object.values(data.pieListData);
-                         this.chartLabels = Object.keys(data.pieListData);
-                       }
-                     );
-               }
+        //          this.eventserviceService.getUsersMultipleParams(data.device,data.event,data.state)
+        //          // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+        //          .subscribe(
+        //                data=>{   
+        //                  this.table = data.list; 
+        //                  // this.lists = data.device;
+        //                  this.eventTypeCount = data.eventTypeCount;
+        //                  this.chartSeries = Object.values(data.pieListData);
+        //                  this.chartLabels = Object.keys(data.pieListData);
+        //                }
+        //              );
+        //        }
                         
 
               //   if (data.device!== "" && data.event! == "" && data.state! == ""){
@@ -319,6 +325,13 @@ this.filteredOptionsState=this.optionsState.filter((state: any) => {
 return state.toLowerCase().indexOf(enteredData.state) > -1;
 })
 }
+
+sort(headerName){
+this.isDescOrder= !this.isDescOrder;
+this.orderHeader=headerName;
+
+}
+
 
 
 // showdashboard(selectedDeviceName:any,selectedEventName:any,selectedStateName:any):void{
@@ -412,10 +425,13 @@ return state.toLowerCase().indexOf(enteredData.state) > -1;
 //       }
 // }
 
+
 onDeviceSelected(selectedDeviceName:any):void{
   //console.log(event);
   this.DeviceSelected = selectedDeviceName;
-  this.eventserviceService.getDeviceForSelectedDeviceByParam(selectedDeviceName)
+  if(this.DeviceSelected)  
+  {
+  this.eventserviceService.getDeviceForSelectedDeviceByParam(selectedDeviceName,this.EventSelected,this.StateSelected)
   .subscribe(
     data=>{       
       this.table = data.list;
@@ -424,10 +440,98 @@ onDeviceSelected(selectedDeviceName:any):void{
       this.chartLabels = Object.keys(data.pieListData);
     }
   );
+}
+if(this.DeviceSelected=="" || this.DeviceSelected=='allDevices')
+{
+  this.eventserviceService.getAllList()
+  .subscribe(
+    data=>{       
+      this.table = data.list;
+      this.eventTypeCount = data.eventTypeCount;
+      this.chartSeries = Object.values(data.pieListData);
+      this.chartLabels = Object.keys(data.pieListData);
+    }
+  );
+}
+
+      //          if ((this.StateSelected == "" || this.StateSelected=="allStates")  
+      //          && (this.EventSelected == "" || this.EventSelected=="allEvents") 
+      //          && (this.DeviceSelected!="" && this.DeviceSelected!="allDevices"))
+      //          {
+      //            // alert("event & state is null");
+      //            this.eventserviceService.getUserWithoutStateAndEvent(this.DeviceSelected)
+      //            .subscribe(
+      //              data=>{    
+      //                this.table = data.list;
+      //                // this.lists = data.device;
+      //                this.eventTypeCount = data.eventTypeCount;
+      //                this.chartSeries = Object.values(data.pieListData);
+      //                this.chartLabels = Object.keys(data.pieListData);
+      //              }
+      //            );
+      //          };
+
+      // if ((this.DeviceSelected== "" || this.DeviceSelected=="allDevices") &&
+      //  (this.EventSelected!= "" && this.EventSelected!="allEvents") &&
+      //  (this.StateSelected!= "" && this.StateSelected!="allStates"))
+      // {
+      //   // alert("device is null");
+      //   this.eventserviceService.getUserWithoutDevice(this.EventSelected,this.StateSelected)
+      //   .subscribe(
+      //     data=>{    
+      //       // this.lists = data.device;
+      //       this.table = data.list;
+      //       this.eventTypeCount = data.eventTypeCount;
+      //       this.chartSeries = Object.values(data.pieListData);
+      //       this.chartLabels = Object.keys(data.pieListData);
+      //     }
+      //   );
+      // };
+
+      if ((this.StateSelected!= "" && this.StateSelected!="allStates") ||
+      (this.DeviceSelected != "" && this.DeviceSelected!="allDevices") || 
+      (this.EventSelected != "" && this.EventSelected!="allEvents"))
+{
+           //  if (this.DeviceSelected!= "" && this.EventSelected!= "" && this.StateSelected!= ""){
+              // alert("all are available");
+              
+              this.eventserviceService.getUsersMultipleParams(this.DeviceSelected,this.EventSelected,this.StateSelected)
+              // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+              .subscribe(
+                    data=>{   
+                      this.table = data.list; 
+                      // this.lists = data.device;
+                      this.eventTypeCount = data.eventTypeCount;
+                      this.chartSeries = Object.values(data.pieListData);
+                      this.chartLabels = Object.keys(data.pieListData);
+                    }
+                  );
+            }
+
+            
+
 }
 onEventSelected(selectedEventNumber:any):void{
   this.EventSelected = selectedEventNumber;
-  this.eventserviceService.getDeviceForSelectedEventByParam(selectedEventNumber,this.DeviceSelected)
+  console.log("with device and event" ,this.StateSelected);
+  console.log("with device and event" , this.DeviceSelected);
+  console.log("with device and event" , this.EventSelected);
+
+  if(this.EventSelected)
+  {
+  this.eventserviceService.getDeviceForSelectedEventByParam(selectedEventNumber,this.DeviceSelected,this.StateSelected)
+  .subscribe(
+    data=>{       
+      this.table = data.list;
+      this.eventTypeCount = data.eventTypeCount;
+      this.chartSeries = Object.values(data.pieListData);
+      this.chartLabels = Object.keys(data.pieListData);
+    }
+  );
+  }
+  if(this.EventSelected=="" || this.EventSelected=='allEvents')
+{
+  this.eventserviceService.getAllList()
   .subscribe(
     data=>{       
       this.table = data.list;
@@ -437,9 +541,69 @@ onEventSelected(selectedEventNumber:any):void{
     }
   );
 }
+
+if ((this.DeviceSelected == "" || this.DeviceSelected=="allDevices") && 
+(this.StateSelected=="" || this.StateSelected=="allStates") &&  
+(this.EventSelected!= "" &&  this.EventSelected!="allEvents"))
+               {
+                 // alert("event & state is null");
+                 this.eventserviceService.getUserWithoutStateAndDevice(this.EventSelected)
+                 .subscribe(
+                   data=>{    
+                     this.table = data.list;
+                     // this.lists = data.device;
+                     this.eventTypeCount = data.eventTypeCount;
+                     this.chartSeries = Object.values(data.pieListData);
+                     this.chartLabels = Object.keys(data.pieListData);
+                   }
+                 );
+               };
+
+                     if ((this.EventSelected == "" || this.EventSelected=="allEvents") && 
+                     (this.DeviceSelected != "" && this.DeviceSelected!="allDevices") && 
+                     (this.StateSelected != "" && this.StateSelected!="allStates"))
+      {
+        // alert("device is null");
+        this.eventserviceService.getUserWithoutEvent(this.DeviceSelected,this.StateSelected)
+        .subscribe(
+          data=>{    
+            // this.lists = data.device;
+            this.table = data.list;
+            this.eventTypeCount = data.eventTypeCount;
+            this.chartSeries = Object.values(data.pieListData);
+            this.chartLabels = Object.keys(data.pieListData);
+          }
+        );
+      };
+
+      if ((this.StateSelected!= "" && this.StateSelected!="allStates") &&
+      (this.DeviceSelected!= "" && this.DeviceSelected!="allDevices") && 
+      (this.EventSelected!= "" && this.EventSelected!="allEvents"))
+{
+           //  if (this.DeviceSelected!= "" && this.EventSelected!= "" && this.StateSelected!= ""){
+              // alert("all are available");
+              
+              this.eventserviceService.getUsersMultipleParams(this.DeviceSelected,this.EventSelected,this.StateSelected)
+              // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+              .subscribe(
+                    data=>{   
+                      this.table = data.list; 
+                      // this.lists = data.device;
+                      this.eventTypeCount = data.eventTypeCount;
+                      this.chartSeries = Object.values(data.pieListData);
+                      this.chartLabels = Object.keys(data.pieListData);
+                    }
+                  );
+            }
+
+
+}
 onSateSelected(selectedStateName:any):void{
   this.StateSelected = selectedStateName;
-  this.eventserviceService.getDeviceForSelectedStateByParam(selectedStateName,this.DeviceSelected)
+  
+  if(this.StateSelected)
+  {
+  this.eventserviceService.getDeviceForSelectedStateByParam(selectedStateName,this.DeviceSelected,this.EventSelected)
   .subscribe(
     data=>{       
       this.table = data.list;
@@ -448,6 +612,78 @@ onSateSelected(selectedStateName:any):void{
       this.chartLabels = Object.keys(data.pieListData);
     }
   );
+  }
+  if(this.StateSelected=="" || this.StateSelected=='allStates')
+  {
+    this.eventserviceService.getAllList()
+    .subscribe(
+      data=>{       
+        this.table = data.list;
+        this.eventTypeCount = data.eventTypeCount;
+        this.chartSeries = Object.values(data.pieListData);
+        this.chartLabels = Object.keys(data.pieListData);
+      }
+    );
+  }
+
+  if ((this.DeviceSelected == "" || this.DeviceSelected=="allDevices") && 
+  (this.EventSelected == "" || this.EventSelected=="allEvents") && 
+  (this.StateSelected!="" && this.StateSelected!=="allStates"))
+  {
+    // alert("event & state is null");
+    this.eventserviceService.getUserWithoutEventAndDevice(this.StateSelected)
+    .subscribe(
+      data=>{    
+        this.table = data.list;
+        // this.lists = data.device;
+        this.eventTypeCount = data.eventTypeCount;
+        this.chartSeries = Object.values(data.pieListData);
+        this.chartLabels = Object.keys(data.pieListData);
+      }
+    );
+  };
+
+
+
+        if ((this.StateSelected == "" || this.StateSelected=="allStates") &&
+         (this.DeviceSelected!= "" && this.DeviceSelected!="allDevices") && 
+         (this.EventSelected!= "" && this.EventSelected!="allEvents"))
+{
+  
+// alert("device is null");
+this.eventserviceService.getUserWithoutState(this.DeviceSelected,this.EventSelected)
+.subscribe(
+data=>{    
+// this.lists = data.device;
+this.table = data.list;
+this.eventTypeCount = data.eventTypeCount;
+this.chartSeries = Object.values(data.pieListData);
+this.chartLabels = Object.keys(data.pieListData);
+}
+);
+};
+
+      if ((this.StateSelected!= "" && this.StateSelected!="allStates") &&
+         (this.DeviceSelected != "" && this.DeviceSelected!="allDevices") && 
+         (this.EventSelected != "" && this.EventSelected!="allEvents"))
+{
+              //  if (this.DeviceSelected!= "" && this.EventSelected!= "" && this.StateSelected!= ""){
+                 // alert("all are available");
+                 
+                 this.eventserviceService.getUsersMultipleParams(this.DeviceSelected,this.EventSelected,this.StateSelected)
+                 // this.eventserviceService.getSelectedDataReport(selectedDeviceName,selectedEventName,selectedStateName)
+                 .subscribe(
+                       data=>{   
+                         this.table = data.list; 
+                         // this.lists = data.device;
+                         this.eventTypeCount = data.eventTypeCount;
+                         this.chartSeries = Object.values(data.pieListData);
+                         this.chartLabels = Object.keys(data.pieListData);
+                       }
+                     );
+               }
+
+
 }
 }
 

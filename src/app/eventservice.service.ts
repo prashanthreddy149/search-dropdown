@@ -12,8 +12,174 @@ export class EventserviceService {
   constructor(private httpclient:HttpClient){}
 
 getlist():Observable<any>{
-    return this.httpclient.get("/d3api/getDropDownList");
+    return this.httpclient.get("/d3api/getDropDownList")
 }
+getDeviceForSelectedDeviceByParam(selectedDeviceName:string,selectedEventNumber:string,selectedStateName:string):Observable<Lists>
+{
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1})
+}
+getDeviceForSelectedEventByParam(selectedEventNumber:string,selectedDeviceName:string,selectedStateName:string):Observable<Lists>{
+
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }  // params1 = params1.set('state',selectedStateName);
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1})
+}
+getDeviceForSelectedStateByParam(selectedStateName:string,selectedDeviceName:string,selectedEventNumber:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutDevice(selectedEventNumber:string,selectedStateName:string):Observable<Lists>{
+  let params1 = new HttpParams();  
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }  
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutEvent(selectedDeviceName:string,selectedStateName:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }  
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutState(selectedDeviceName:string,selectedEventNumber:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutEventAndDevice(selectedStateName:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }
+
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutStateAndDevice(selectedEventNumber:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1});
+}
+
+getUserWithoutStateAndEvent(selectedDeviceName:string):Observable<Lists>{
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1})
+}
+
+public getUsersMultipleParams(selectedDeviceName: string,selectedEventNumber: any,selectedStateName: any): Observable<Lists> {
+  const url = '/d3api/getDropDown';
+  // let parameters = {device:"device",event:"event",state:"state"};
+
+  // let queryParams = new HttpParams({ fromObject:
+
+  //   {
+
+  //     device: device,
+
+  //     event: event,
+
+  //     state: state
+
+  // } });
+
+  let params1 = new HttpParams();
+  if(selectedDeviceName)
+  {
+  params1 = params1.set('device',selectedDeviceName);
+  }
+  if(selectedEventNumber)
+  {
+  params1 = params1.set('event',selectedEventNumber);
+  }
+  if(selectedStateName)
+  {
+  params1 = params1.set('state',selectedStateName);
+  }
+
+//   queryParams = queryParams.appendAll( {
+
+//     "device": selectedDeviceName,
+
+//     "event": selectedEventNumber,
+
+//     "state": selectedStateName
+
+// } );
+
+return this.httpclient.get<Lists>("/d3api/getDropDown?",{params:params1})
+
+}
+
+
+
+
+
 
 getAllList():Observable<any>{
     return this.httpclient.get("/d3api/getDropDown");
@@ -28,52 +194,46 @@ getAllList():Observable<any>{
 //   return this.httpclient.get("/d3api/getDropDown",{params:params1});
   
 // }
-getDeviceForSelectedDeviceByParam(selectedDeviceName:string):Observable<Lists>{
 
-  let params1 = new HttpParams();
-  params1 = params1.set('device',selectedDeviceName);
+// getDeviceForSelectedEventByParam(selectedEventNumber:string,selectedDeviceName:string):Observable<Lists>{
 
-  return this.httpclient.get<Lists>("/d3api/getDropDown",{params:params1});
+//   let params1 = new HttpParams();
+//   params1 = params1.set('device',selectedDeviceName);
+//   params1 = params1.set('event',selectedEventNumber);
+//   return this.httpclient.get<Lists>("/d3api/getDropDown",{params:params1});
 
-}
+// }
 
-getDeviceForSelectedEventByParam(selectedEventNumber:string,selectedDeviceName:string):Observable<Lists>{
+// getDeviceForSelectedStateByParam(selectedStateName:string,selectedDeviceName:string,selectedEventNumber:string):Observable<Lists>{
 
-  let params1 = new HttpParams();
-  params1 = params1.set('device',selectedDeviceName);
-  params1 = params1.set('event',selectedEventNumber);
-  return this.httpclient.get<Lists>("/d3api/getDropDown",{params:params1});
+//   let params1 = new HttpParams();
+//   params1 = params1.set('device',selectedDeviceName);
+//   params1 = params1.set('device',selectedEventNumber);
 
-}
+//   params1 = params1.set('state',selectedStateName);
 
-getDeviceForSelectedStateByParam(selectedStateName:string,selectedDeviceName:string):Observable<Lists>{
+//   return this.httpclient.get<Lists>("/d3api/getDropDown",{params:params1});
 
-  let params1 = new HttpParams();
-  params1 = params1.set('device',selectedDeviceName);
-  params1 = params1.set('state',selectedStateName);
-
-  return this.httpclient.get<Lists>("/d3api/getDropDown",{params:params1});
-
-}
-public getUsersMultipleParams(device: string,event: any,state: any): Observable<Lists> {
-  const url = '/d3api/getDropDown';
-  // let parameters = {device:"device",event:"event",state:"state"};
-  // let queryParams = new HttpParams({ fromObject: 
-  //   {
-  //     device: device,
-  //     event: event,
-  //     state: state
-  // } }); 
-  let queryParams = new HttpParams();
-  queryParams = queryParams.appendAll( {
-    "device": device,
-    "event": event,
-    "state": state
-} );
+// }
+// public getUsersMultipleParams(device: string,event: any,state: any): Observable<Lists> {
+//   const url = '/d3api/getDropDown';
+//   // let parameters = {device:"device",event:"event",state:"state"};
+//   // let queryParams = new HttpParams({ fromObject: 
+//   //   {
+//   //     device: device,
+//   //     event: event,
+//   //     state: state
+//   // } }); 
+//   let queryParams = new HttpParams();
+//   queryParams = queryParams.appendAll( {
+//     "device": device,
+//     "event": event,
+//     "state": state
+// } );
 
 
-  return this.httpclient.get<Lists>(url + queryParams.toString());
-}
+//   return this.httpclient.get<Lists>(url + queryParams.toString());
+// }
 
 
 // public getUsersNotMultipleParams(device: any,event: any,state: any): Observable<any> {
@@ -84,40 +244,40 @@ public getUsersMultipleParams(device: string,event: any,state: any): Observable<
 // }
 
 
-public getUserWithoutDevice(event: any,state: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"event":event,"state":state};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
-public getUserWithoutEvent(device: any,state: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"device":device,"state":state};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
-public getUserWithoutState(device: any,event: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"device":device,"event":event};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
-public getUserWithoutEventAndDevice(state: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"state":state};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
-public getUserWithoutStateAndDevice(event: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"event":event};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
-public getUserWithoutStateAndEvent(device: any): Observable<Lists> {
-  const url = 'http://dashboard.engrid.in/d3api/getDropDown';
-  let parameters = {"device":device};
-  let queryParams = new HttpParams({ fromObject: parameters }); 
-  return this.httpclient.get<Lists>(url,{params:queryParams});
-}
+// public getUserWithoutDevice(event: any,state: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"event":event,"state":state};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
+// public getUserWithoutEvent(device: any,state: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"device":device,"state":state};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
+// public getUserWithoutState(device: any,event: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"device":device,"event":event};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
+// public getUserWithoutEventAndDevice(state: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"state":state};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
+// public getUserWithoutStateAndDevice(event: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"event":event};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
+// public getUserWithoutStateAndEvent(device: any): Observable<Lists> {
+//   const url = 'http://dashboard.engrid.in/d3api/getDropDown';
+//   let parameters = {"device":device};
+//   let queryParams = new HttpParams({ fromObject: parameters }); 
+//   return this.httpclient.get<Lists>(url,{params:queryParams});
+// }
 }

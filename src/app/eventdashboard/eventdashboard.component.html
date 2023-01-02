@@ -37,7 +37,7 @@
                     <mat-label for="inputDevice">Select Devices</mat-label>
                 <input formControlName="device" matInput (ngModelChange)="onDeviceSelected($event)" type="text" [matAutocomplete]="auto" />
                 <mat-autocomplete #auto="matAutocomplete"   id="inputDevice" style="width: 100%;">
-                    <mat-option value="allDevices">All Devices</mat-option>
+                    <mat-option value="">All Devices</mat-option>
                 <mat-option *ngFor="let device of filteredOptions" [value]="device">
                 {{device}}
                 </mat-option>
@@ -74,7 +74,7 @@
                     <mat-label for="inputEvent">Select Event Type</mat-label>
                 <input formControlName="event" matInput (ngModelChange)="onEventSelected($event)" type="text" [matAutocomplete]="abc" />
                 <mat-autocomplete #abc="matAutocomplete"  id="inputEvent" style="width: 100%;">
-                    <mat-option value="allEvents">All Events</mat-option>
+                    <mat-option value="">All Events</mat-option>
                 <mat-option *ngFor="let event of filteredOptionsEvent" [value]="event">
                 {{event}}
                 </mat-option>
@@ -94,7 +94,7 @@
                     <mat-label for="inputState">Select Event State</mat-label>
                 <input formControlName="state" class="" (ngModelChange)="onSateSelected($event)" matInput type="text" [matAutocomplete]="state" />
                 <mat-autocomplete #state="matAutocomplete"  id="inputState" style="width: 100%;">
-                    <mat-option value="allStates" class="all-states">All States</mat-option>
+                    <mat-option value="">All States</mat-option>
                 <mat-option *ngFor="let state of filteredOptionsState" [value]="state">
                 {{state}}
                 </mat-option>
@@ -196,7 +196,7 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
-        <table id="example2" class="table table-bordered table-striped dataTable dtr-inline table-responsive">
+        <!-- <table id="example2" class="table table-bordered table-striped dataTable dtr-inline table-responsive">
         
     <thead>
     <tr>
@@ -212,7 +212,92 @@
             </td>
         </tr>
     </tbody>
-    </table>
+    </table> -->
+
+    <table id="example2" class="table table-bordered table-striped dataTable dtr-inline table-responsive">
+
+       
+
+        <thead>
+    
+        <tr>
+    
+            <!-- <th *ngFor="let col of column" class="sorting sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">{{ col }}</th> -->
+    
+            <th>Context</th>
+    
+            <th (click)="sort('device')">Device&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('event')">Event&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('firstoccurrencetime')">First Occurrence Time&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('lastoccurrencetime')">Last Ocurrence Time&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('occurrencecount')">Occurrence Count&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('persisttime')">Persist Time&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('receivetime')">Receive Time&nbsp;<i class="fa fa-sort"></i></th>
+    
+            <th (click)="sort('state')">State&nbsp;<i class="fa fa-sort"></i></th>
+    
+    
+    
+    
+        </tr>
+    
+           
+    
+        </thead>
+    
+     <tbody>  
+    
+            <!-- <tr *ngFor="let list of table | orderBy:key:reverse | paginate: {
+    
+                itemsPerPage: tableSize,
+    
+                currentPage: page,
+    
+                totalItems: count}; let i=index" > -->
+    
+                <tr *ngFor="let list of table | orderBy:orderHeader:isDescOrder | paginate: {
+    
+                    itemsPerPage: tableSize,
+    
+                    currentPage: page,
+    
+                    totalItems: count}; let i=index" >
+    
+                <!-- <td *ngFor="let col of index">
+    
+                    {{ list[col] }}
+    
+                </td> -->
+    
+                <td>{{list.context}}</td>
+    
+                <td>{{list.device}}</td>
+    
+                <td>{{list.event}}</td>
+    
+                <td>{{list.firstoccurrencetime}}</td>
+    
+                <td>{{list.lastoccurrencetime}}</td>
+    
+                <td>{{list.occurrencecount}}</td>
+    
+                <td>{{list.persisttime}}</td>
+    
+                <td>{{list.receivetime}}</td>
+    
+                <td>{{list.state}}</td>
+    
+            </tr>
+    
+        </tbody>
+    
+        </table>
 </div>
 </div>
 <div class="row">
